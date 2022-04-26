@@ -17,7 +17,7 @@ const Header = defineComponent({
     const { collapse, visible, isSmallerThanTablet } = this;
 
     return (
-      <ElHeader class="justify-between">
+      <ElHeader class="justify-between flex items-center shadow-sm">
         <Navbar></Navbar>
       </ElHeader>
     );

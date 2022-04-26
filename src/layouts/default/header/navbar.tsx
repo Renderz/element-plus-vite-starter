@@ -23,7 +23,7 @@ const Navbar = defineComponent({
      */
     const fold = isSmallerThanTablet ? visible : collapse;
 
-    return <ElIcon onClick={toggle}>{fold ? <Fold></Fold> : <Expand></Expand>}</ElIcon>;
+    return <ElIcon onClick={toggle}>{fold ? <Expand></Expand> : <Fold></Fold>}</ElIcon>;
   },
 });
 
