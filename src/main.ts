@@ -2,13 +2,20 @@ import { createApp } from 'vue';
 import { createWebHashHistory, createRouter } from 'vue-router';
 import routes from '~pages';
 
-import App from './App.vue';
-import '~/styles/index.scss';
+import App from './App';
+
+// windi Styles
+import 'virtual:windi-base.css';
+import 'virtual:windi-components.css';
+import 'virtual:windi-utilities.css';
+
+// Element Styles
 import 'element-plus/theme-chalk/src/base.scss';
-// If you want to use ElMessage, import it.
 import 'element-plus/theme-chalk/src/message.scss';
-// If you want to use ElNotification, import it.
 import 'element-plus/theme-chalk/src/notification.scss';
+
+// Customized Styles
+import '~/styles/index.scss';
 
 const app = createApp(App);
 const router = createRouter({

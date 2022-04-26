@@ -3,6 +3,7 @@
   "volar.tsPluginStatus": false,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.colorDecorators": true,
   "stylelint.enable": true,
   "stylelint.validate": ["css", "less", "scss", "sass", "postcss", "vue"],
   "css.validate": false,

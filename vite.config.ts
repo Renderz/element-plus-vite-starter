@@ -8,9 +8,11 @@ import legacy from '@vitejs/plugin-legacy';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 // import { createHtmlPlugin } from 'vite-plugin-html';
 import Pages from 'vite-plugin-pages';
+import windiCSS from 'vite-plugin-windicss';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import ElementPlus from 'unplugin-element-plus/vite';
 
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -31,7 +33,7 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
 
   const env = loadEnv(mode, process.cwd());
 
-  const { VITE_TITLE, VITE_HTTPS, VITE_PROXY, VITE_LEGACY } = wrapperEnv(env);
+  const { VITE_HTTPS, VITE_PROXY, VITE_LEGACY } = wrapperEnv(env);
 
   const plugins: UserConfig['plugins'] = [
     vue(),
@@ -46,11 +48,13 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     //     },
     //   },
     // }),
+    windiCSS(),
     Pages({
       dirs: [{ dir: path.resolve(srcPath, 'pages'), baseRoute: '' }],
       exclude: ['**/components/*.vue'],
       extensions: ['vue'],
     }),
+    // auto import doesnt support JSX/TSX
     AutoImport({
       resolvers: [ElementPlusResolver()],
       dts: path.resolve(srcPath, 'auto-imports.d.ts'),
@@ -62,6 +66,9 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
         }),
       ],
       dts: path.resolve(srcPath, 'components.d.ts'),
+    }),
+    ElementPlus({
+      useSource: true,
     }),
   ];
 
