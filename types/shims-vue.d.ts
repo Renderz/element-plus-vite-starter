@@ -9,9 +9,8 @@ declare module '*.vue' {
   export default component;
 }
 
-type EventHandler = (...args: any[]) => void;
-
 declare module 'vue' {
+  type EventHandler = (...args: any[]) => void;
   interface ComponentCustomProps {
     // should be removed after Vue supported component events typing
     // see: https://github.com/vuejs/vue-next/issues/1553

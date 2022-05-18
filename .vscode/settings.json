@@ -1,6 +1,4 @@
 {
-  "volar.tsPlugin": true,
-  "volar.tsPluginStatus": false,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.colorDecorators": true,
@@ -9,5 +7,5 @@
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "eslint.validate": ["javascript", "vue", "typescript", "html"]
+  "eslint.validate": ["javascript", "vue", "typescript", "html", "typescriptreact"]
 }

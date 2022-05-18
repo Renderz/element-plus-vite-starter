@@ -39,7 +39,6 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     vue(),
     vueJsx(),
     vueSetupExtend(),
-    // TODO: 这里开了会导致proxy失效
     // createHtmlPlugin({
     //   minify: isBuild,
     //   inject: {
@@ -52,7 +51,7 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     Pages({
       dirs: [{ dir: path.resolve(srcPath, 'pages'), baseRoute: '' }],
       exclude: ['**/components/*.vue'],
-      extensions: ['vue'],
+      extensions: ['vue', 'jsx', 'tsx'],
     }),
     // auto import doesnt support JSX/TSX
     AutoImport({

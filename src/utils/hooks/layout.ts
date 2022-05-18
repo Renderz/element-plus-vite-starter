@@ -1,7 +1,7 @@
 import { watch, ref, unref } from 'vue';
 import { useBreakpoints, breakpointsSematic, createInjectionState } from '@vueuse/core';
 
-const [useProvider, useConsumer] = createInjectionState(() => {
+const [useLayoutProvider, useLayoutConsumer] = createInjectionState(() => {
   const breakpoints = useBreakpoints(breakpointsSematic);
 
   const isSmallerThanTablet = breakpoints.smaller('tablet');
@@ -46,5 +46,5 @@ const [useProvider, useConsumer] = createInjectionState(() => {
   };
 });
 
-export { useProvider };
-export { useConsumer };
+export { useLayoutProvider };
+export { useLayoutConsumer };

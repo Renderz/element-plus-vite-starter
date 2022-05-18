@@ -3,8 +3,8 @@ export type MenuItemData = {
   hide?: boolean;
   icon?: string;
   title?: string;
-  path: string;
-  key?: string;
+  path?: string;
+  [propName: string]: MenuItemData[] | boolean | string | undefined;
 };
 
 export type MenuKeyMap = {
@@ -13,5 +13,4 @@ export type MenuKeyMap = {
   icon?: string;
   title?: string;
   path?: string;
-  key?: string;
 };

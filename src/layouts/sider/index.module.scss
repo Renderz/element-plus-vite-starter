@@ -1,0 +1,15 @@
+.sider {
+  background-color: #001529;
+}
+
+.sider-header {
+  color: #fff;
+  background-color: #001529;
+}
+
+.drawer {
+  > section {
+    padding: 0;
+    overflow: hidden;
+  }
+}

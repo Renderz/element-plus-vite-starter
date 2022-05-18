@@ -1,3 +1,4 @@
+import { matches } from 'lodash-es';
 import { isObject } from '~/utils/is';
 
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
@@ -6,4 +7,14 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
     src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
   }
   return src;
+}
+
+export function doubleSideMatched<T>(a: T, b: T): boolean {
+  return matches<T>(a)(b) && matches(b)(a);
+}
+
+export function pathToCamelCase(str: string) {
+  return str.replace(/\/([a-z])/g, function (all, i) {
+    return i.toUpperCase();
+  });
 }

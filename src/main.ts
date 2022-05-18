@@ -18,6 +18,7 @@ import 'element-plus/theme-chalk/src/notification.scss';
 import '~/styles/index.scss';
 
 const app = createApp(App);
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,

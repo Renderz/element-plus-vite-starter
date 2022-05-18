@@ -4,11 +4,21 @@ import qs from 'qs';
 import { cloneDeep } from 'lodash-es';
 import download from 'downloadjs';
 import { parse, compile } from 'path-to-regexp';
-import { isFunction } from '~/utils/is';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 import { AxiosCanceler } from './axiosCancel';
 import { ContentTypeEnum, RequestEnum } from './types';
 import type { Result, Options, Params } from './types';
-// import { AxiosCanceler } from './axiosCancel';
+
+// const style =
+//   'display: block;width: 100%;height: 100%;opacity: 0.4;filter: alpha(opacity=40);background: #FFF;position: fixed;top: 0;left: 0;z-index: 2000;';
+
+const template =
+  '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner" style="top: 50%;right: 50%"><div class="spinner-icon"></div></div>';
+
+NProgress.configure({
+  template,
+});
 
 export class Requex<T = any> {
   private axiosInstance: AxiosInstance;
@@ -20,7 +30,7 @@ export class Requex<T = any> {
     this.params = params;
     this.axiosInstance = axios.create(options);
     this.setupInterceptors();
-    if (isFunction(customizeInstance)) {
+    if (typeof customizeInstance === 'function') {
       customizeInstance(this.axiosInstance);
     }
   }
@@ -164,7 +174,7 @@ export class Requex<T = any> {
     /**
      * 使用外部判断逻辑判断success
      */
-    if (isFunction(options.isSuccess)) {
+    if (typeof options.isSuccess === 'function') {
       const success = options.isSuccess(data);
       ret.success = success;
     }
@@ -196,9 +206,9 @@ export class Requex<T = any> {
 
       const ret = this.afterResponse<R>(response, options);
 
-      if (ret.success && isFunction(params?.onSuccess)) {
+      if (ret.success && typeof params.onSuccess === 'function') {
         params?.onSuccess(ret.data, ret.status, options);
-      } else if (!ret.success && isFunction(params?.onFail)) {
+      } else if (!ret.success && typeof params.onFail === 'function') {
         params?.onFail(ret.data, ret.status, options);
       }
 
@@ -207,7 +217,7 @@ export class Requex<T = any> {
       if (e instanceof axios.Cancel) {
         const status = '(canceled)';
 
-        if (isFunction(params?.onFail)) {
+        if (typeof params.onFail === 'function') {
           params?.onFail({}, status, options);
         }
 
@@ -225,7 +235,7 @@ export class Requex<T = any> {
           throw e;
         }
 
-        if (isFunction(params?.onFail)) {
+        if (typeof params?.onFail === 'function') {
           params?.onFail(response.data, response.status, options);
         }
 

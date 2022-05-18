@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import requex from '~/utils/http';
+import request from '~/utils/http';
 import * as services from './services';
 
 const onClick = async () => {
@@ -15,7 +15,7 @@ const onClick = async () => {
    * 参数2位出参类型
    * extraData作用与axios.data一致
    */
-  const response = await requex.request(services.getTableData, {
+  const response = await request(services.getTableData, {
     // extraData: {
     //   a: 1,
     //   b: 2,

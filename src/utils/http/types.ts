@@ -34,11 +34,11 @@ export interface Params<R = any, D = any> {
   /**
    * 请求成功回调
    */
-  onSuccess?: CallbackFn<R>;
+  onSuccess?: CallbackFn<R> | false;
   /**
    * 请求失败回调
    */
-  onFail?: CallbackFn<R>;
+  onFail?: CallbackFn<R> | false;
   /**
    * 请求参数，和options.data相同。可用于GET或者POST
    */

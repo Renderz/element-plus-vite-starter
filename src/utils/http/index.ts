@@ -45,7 +45,6 @@ const instance = new Requex<RequexResponse>(
       }
     },
     onFail: (response, status, { url }) => {
-      console.log('response', response);
       if ([401, 403].includes(status as number)) {
         const currHref = window.location.href;
         window.location.href = `${import.meta.env.VITE_API_URL}/me?redirect_uri=${encodeURIComponent(currHref)}`;
@@ -66,4 +65,4 @@ const instance = new Requex<RequexResponse>(
 
 export { Options };
 
-export default instance;
+export default instance.request.bind(instance);
