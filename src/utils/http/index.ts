@@ -37,6 +37,7 @@ const instance = new Requex<RequexResponse>(
     isSuccess: (response) => {
       return response?.success === true;
     },
+    showSpin: true,
   },
   {
     onSuccess: (response) => {

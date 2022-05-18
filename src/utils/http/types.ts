@@ -25,6 +25,10 @@ export interface Options<R = any, D = any> extends AxiosRequestConfig<D> {
    * content-type 会基于类型做options.data的转换
    */
   contentType?: 'JSON' | 'FORM_URLENCODED' | 'FORM_DATA';
+  /**
+   * spin mask 挂载的组件
+   */
+  getContainer?: () => HTMLElement;
 }
 
 /**

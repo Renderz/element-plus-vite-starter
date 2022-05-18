@@ -18,3 +18,7 @@ export function pathToCamelCase(str: string) {
     return i.toUpperCase();
   });
 }
+
+export function delay<T>(ms: number, result: T) {
+  return new Promise<T>((resolve) => setTimeout(() => resolve(result), ms));
+}

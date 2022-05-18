@@ -37,7 +37,6 @@ const [useTabProvider, useTabConsumer] = createInjectionState(() => {
   watch(
     () => ({ route, plainMenus: app?.plainMenus.value }),
     (value) => {
-      console.log(route.fullPath);
       // 监听路由变化
       if (!value?.plainMenus) {
         // 如果还未获取服务器的菜单列表，则不添加

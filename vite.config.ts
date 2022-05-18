@@ -39,6 +39,7 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     vue(),
     vueJsx(),
     vueSetupExtend(),
+    // vite-plugin-page插件会导致proxy失效，暂时只能通过修改index.html修改Title，等问题修复后改为插件方式
     // createHtmlPlugin({
     //   minify: isBuild,
     //   inject: {

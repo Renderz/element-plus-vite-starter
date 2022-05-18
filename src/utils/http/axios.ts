@@ -4,31 +4,22 @@ import qs from 'qs';
 import { cloneDeep } from 'lodash-es';
 import download from 'downloadjs';
 import { parse, compile } from 'path-to-regexp';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
 import { AxiosCanceler } from './axiosCancel';
+import Progress from '~/utils/progress';
 import { ContentTypeEnum, RequestEnum } from './types';
 import type { Result, Options, Params } from './types';
-
-// const style =
-//   'display: block;width: 100%;height: 100%;opacity: 0.4;filter: alpha(opacity=40);background: #FFF;position: fixed;top: 0;left: 0;z-index: 2000;';
-
-const template =
-  '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner" style="top: 50%;right: 50%"><div class="spinner-icon"></div></div>';
-
-NProgress.configure({
-  template,
-});
 
 export class Requex<T = any> {
   private axiosInstance: AxiosInstance;
   private readonly options: Options;
   private readonly params?: Params;
+  private readonly progress: Progress;
 
   constructor(options: Options<T>, params?: Params<T>, customizeInstance?: (instance: AxiosInstance) => void) {
     this.options = options;
     this.params = params;
     this.axiosInstance = axios.create(options);
+    this.progress = new Progress(options.getContainer);
     this.setupInterceptors();
     if (typeof customizeInstance === 'function') {
       customizeInstance(this.axiosInstance);
@@ -194,6 +185,8 @@ export class Requex<T = any> {
     this.transformURL(options);
     this.transformData(options);
 
+    const stop = options.showSpin ? this.progress.start() : undefined;
+
     try {
       const response = await this.axiosInstance.request<R, AxiosResponse<R>, D>(options);
 
@@ -247,6 +240,10 @@ export class Requex<T = any> {
       }
 
       throw e;
+    } finally {
+      if (typeof stop === 'function') {
+        stop();
+      }
     }
   }
 }

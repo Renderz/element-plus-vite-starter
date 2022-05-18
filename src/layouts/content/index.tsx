@@ -30,7 +30,11 @@ const Content = defineComponent({
                 return (
                   <Transition name="fade-transform" mode="out-in">
                     <KeepAlive include={tabList.map((tab) => tab.componentName)}>
-                      {Wrapper ? <Wrapper>{props.Component}</Wrapper> : null}
+                      {/**
+                       * Wrapper组件是通过tab里fullpath动态生成的组件
+                       * 如果不存在tab里的组件，不会被keep-alive缓存
+                       */}
+                      {Wrapper ? <Wrapper>{props.Component}</Wrapper> : props.Component}
                     </KeepAlive>
                   </Transition>
                 );
