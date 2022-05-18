@@ -7,6 +7,7 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import { RouterView } from 'vue-router';
 import { useTabConsumer } from '~/utils/hooks/tab';
 import styles from './index.module.scss';
+import './fade.scss';
 
 const Content = defineComponent({
   name: 'Content',
