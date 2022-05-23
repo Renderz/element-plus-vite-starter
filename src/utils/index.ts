@@ -14,7 +14,7 @@ export function doubleSideMatched<T>(a: T, b: T): boolean {
 }
 
 export function pathToCamelCase(str: string) {
-  return str.replace(/\/([a-z])/g, function (all, i) {
+  return str.replace(/\/([a-z])/g, function (_all, i) {
     return i.toUpperCase();
   });
 }

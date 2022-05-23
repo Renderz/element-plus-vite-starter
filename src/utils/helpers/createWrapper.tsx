@@ -14,6 +14,11 @@ export type WrapperType = DefineComponent<
   string
 >;
 
+/**
+ * @description 通过name生成组件，一般用于keep-alive内，通过路由path生成可被keepAlive.includes识别的组件
+ * @param name 组件名
+ * @returns
+ */
 const createWrapper = (name: string) =>
   defineComponent({
     name,

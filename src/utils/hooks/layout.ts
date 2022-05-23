@@ -1,6 +1,9 @@
 import { watch, ref, unref } from 'vue';
 import { useBreakpoints, breakpointsSematic, createInjectionState } from '@vueuse/core';
 
+/**
+ * @description 和layout相关的hooks，如sider drawer状态等
+ */
 const [useLayoutProvider, useLayoutConsumer] = createInjectionState(() => {
   const breakpoints = useBreakpoints(breakpointsSematic);
 

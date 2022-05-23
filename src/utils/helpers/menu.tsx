@@ -1,9 +1,14 @@
 import type { VNode } from 'vue';
-import { ElSubMenu, ElMenuItemGroup, ElMenuItem, ElIcon } from 'element-plus';
-import * as icons from '@element-plus/icons-vue';
-import { isArray } from '~/utils/is';
+import { RouterLink } from 'vue-router';
+import { SubMenu, MenuItem } from 'ant-design-vue';
+import * as icons from '@ant-design/icons-vue';
+import { isArray, isUrl } from '~/utils/is';
 
-type IconType = typeof icons;
+type IconType = Omit<
+  typeof icons,
+  'createFromIconfontCN' | 'defualt' | 'TwoToneColor' | 'setTwoToneColor' | 'getTwoToneColor'
+>;
+
 type IconKey = keyof IconType;
 
 export type StandardMenuItem = {
@@ -12,6 +17,10 @@ export type StandardMenuItem = {
   icon?: string;
   title?: string;
   path?: string;
+  index?: string;
+  fullPath?: string;
+  parentPath?: Array<string | undefined>;
+  parentIndex?: Array<string>;
 };
 
 export type MenuItemData = StandardMenuItem & {
@@ -32,15 +41,11 @@ export type MenuKeyMap = {
  * @returns
  */
 const getDynamicIcon = (key?: IconKey) => {
-  const dynamicKey = key || 'Location';
+  const dynamicKey = key || 'QuestionCircleOutlined';
 
-  const DynamicIcon = icons[dynamicKey] || icons.Location;
+  const DynamicIcon = icons[dynamicKey as IconKey] || icons.QuestionCircleOutlined;
 
-  return (
-    <ElIcon>
-      <DynamicIcon></DynamicIcon>
-    </ElIcon>
-  );
+  return <DynamicIcon></DynamicIcon>;
 };
 
 export class MenuUtils {
@@ -68,9 +73,12 @@ export class MenuUtils {
    * @param item
    * @returns
    */
-  private getSubMenuOrItem(index: string, item: MenuItemData, parentIndex?: string, parentPath?: string): VNode | null {
-    const key = `${parentIndex || '__START__'}${index}`;
-
+  private getSubMenuOrItem(
+    index: string,
+    item: MenuItemData,
+    parentIndex: string[],
+    parentPath: Array<string | undefined>,
+  ): VNode | null {
     const hide = item[this.keyMap.hide!] as boolean | undefined;
     const path = item[this.keyMap.path!] as string | undefined;
     const children = item[this.keyMap.children!] as MenuItemData[] | undefined;
@@ -80,13 +88,20 @@ export class MenuUtils {
     const icon = getDynamicIcon(iconKey);
     const notHidedChildren = children?.filter((child) => !child[this.keyMap.hide!]) || [];
 
-    const mergedPath = this.withParenPath ? `${parentPath || ''}${path}` : path;
+    const mergedParentIndex = [...parentIndex, index];
+
+    const mergedParentPath = [...parentPath, path];
+    const fullPath = this.withParenPath ? mergedParentPath.join('') : path;
 
     this.plainMenus.push({
       title: title,
-      path: mergedPath,
+      path: path,
       icon: iconKey,
       hide: hide,
+      fullPath,
+      parentPath,
+      parentIndex,
+      index,
     });
 
     if (hide) {
@@ -95,23 +110,17 @@ export class MenuUtils {
 
     if (isArray(notHidedChildren) && notHidedChildren.length > 0) {
       const subMenuContent = notHidedChildren.map((item, childIndex) =>
-        this.getSubMenuOrItem(String(childIndex), item, key, path),
+        this.getSubMenuOrItem(String(childIndex), item, mergedParentIndex, mergedParentPath),
       );
 
       return (
-        <ElSubMenu
-          index={key}
-          v-slots={{
-            title: () => (
-              <>
-                {icon}
-                <span>{title}</span>
-              </>
-            ),
+        <SubMenu key={mergedParentIndex.join('')}>
+          {{
+            icon: () => icon,
+            title: () => title,
+            default: () => subMenuContent,
           }}
-        >
-          <ElMenuItemGroup>{subMenuContent}</ElMenuItemGroup>
-        </ElSubMenu>
+        </SubMenu>
       );
     }
 
@@ -121,14 +130,19 @@ export class MenuUtils {
     }
 
     return (
-      <ElMenuItem
-        index={mergedPath}
-        v-slots={{
-          title: () => <span>{title}</span>,
+      <MenuItem key={mergedParentIndex.join('')}>
+        {{
+          icon: () => icon,
+          title: () => title,
+          default: () => {
+            if (isUrl(path)) {
+              return <a href={path}>{title}</a>;
+            }
+
+            return <RouterLink to={fullPath || '/'}>{title}</RouterLink>;
+          },
         }}
-      >
-        {icon}
-      </ElMenuItem>
+      </MenuItem>
     );
   }
 
@@ -137,7 +151,7 @@ export class MenuUtils {
    * @returns
    */
   getDom() {
-    return this.menuItemData.map((item, index) => this.getSubMenuOrItem(String(index), item, undefined, ''));
+    return this.menuItemData.map((item, index) => this.getSubMenuOrItem(String(index), item, [], []));
   }
 
   /**

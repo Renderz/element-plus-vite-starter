@@ -1,7 +1,10 @@
 import { defineComponent } from 'vue';
-import { ElHeader, ElTabs, ElTabPane } from 'element-plus';
+import { Layout, Tabs } from 'ant-design-vue';
 import { useTabConsumer } from '~/utils/hooks/tab';
-import './index.scss';
+import './index.less';
+
+const { Header } = Layout;
+const { TabPane } = Tabs;
 
 const TabBar = defineComponent({
   name: 'TabBar',
@@ -9,20 +12,24 @@ const TabBar = defineComponent({
     const { tabList, activeKey, handleTabClick, handleTabRemove } = useTabConsumer()!;
 
     return () => (
-      <ElHeader class="p-0 h-10 shadow-sm">
-        <ElTabs
-          type="border-card"
-          closable
-          modelValue={activeKey.value}
-          onTab-click={(tabpaneContext) => handleTabClick(tabpaneContext.paneName as string)}
-          onTab-remove={(value) => handleTabRemove(value as string)}
-          class="header-tabs"
+      <Header class="p-0 h-10 bg-light-50 shadow-sm">
+        <Tabs
+          type="editable-card"
+          hideAdd
+          activeKey={activeKey.value}
+          onChange={(key) => handleTabClick(key)}
+          onEdit={(key, action) => {
+            if (action === 'remove') {
+              handleTabRemove(key);
+            }
+          }}
+          id="header-tabs"
         >
-          {tabList?.value.map((tab) => {
-            return <ElTabPane label={tab.label} name={tab.fullPath}></ElTabPane>;
-          })}
-        </ElTabs>
-      </ElHeader>
+          {tabList.value.map((tab) => (
+            <TabPane key={tab.fullPath} tab={tab.label}></TabPane>
+          ))}
+        </Tabs>
+      </Header>
     );
   },
 });

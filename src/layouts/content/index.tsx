@@ -1,16 +1,17 @@
-import { ElMain, ElScrollbar, ElBacktop, ElIcon } from 'element-plus';
-import { CaretTop } from '@element-plus/icons-vue';
 import type { VNode } from 'vue';
 import { Transition, defineComponent, KeepAlive } from 'vue';
+import { Layout, BackTop } from 'ant-design-vue';
 import classNames from 'classnames';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import { RouterView } from 'vue-router';
+import { ScrollBar } from '~/components/index';
 import { useTabConsumer } from '~/utils/hooks/tab';
-import styles from './index.module.scss';
-import './fade.scss';
+import './fade.less';
 
-const Content = defineComponent({
-  name: 'Content',
+const { Content } = Layout;
+
+const DefaultContent = defineComponent({
+  name: 'DefaultContent',
   setup() {
     const { Wrapper, tabList } = useTabConsumer()!;
 
@@ -23,8 +24,8 @@ const Content = defineComponent({
     const { Wrapper, tabList } = this;
 
     return (
-      <ElMain class={classNames('overflow-hidden flex-1', styles.main)}>
-        <ElScrollbar>
+      <Content class={classNames('overflow-hidden flex-1')}>
+        <ScrollBar>
           <RouterView
             v-slots={{
               default: (props: { Component: VNode; route: RouteLocationNormalizedLoaded }) => {
@@ -42,17 +43,18 @@ const Content = defineComponent({
               },
             }}
           ></RouterView>
-          <ElBacktop bottom={15} right={15} target=".el-main>.el-scrollbar>.el-scrollbar__wrap">
-            <div>
-              <ElIcon>
-                <CaretTop></CaretTop>
-              </ElIcon>
-            </div>
-          </ElBacktop>
-        </ElScrollbar>
-      </ElMain>
+          <BackTop
+            // TODO: backtop暂时有问题
+            style={{ display: 'block' }}
+            visibilityHeight={400}
+            target={() =>
+              document.querySelector('main.ant-layout-content>.el-scrollbar>.el-scrollbar__wrap') as HTMLElement
+            }
+          ></BackTop>
+        </ScrollBar>
+      </Content>
     );
   },
 });
 
-export default Content;
+export default DefaultContent;

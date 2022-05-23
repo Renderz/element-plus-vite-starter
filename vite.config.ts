@@ -11,12 +11,13 @@ import Pages from 'vite-plugin-pages';
 import windiCSS from 'vite-plugin-windicss';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import ElementPlus from 'unplugin-element-plus/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import { createStyleImportPlugin } from 'vite-plugin-style-import';
 
 import { visualizer } from 'rollup-plugin-visualizer';
 
 import { wrapperEnv, createProxy } from './build/utils';
+import AndDesignVueResolve from './build/antDesignVueResolve';
 
 const srcPath = path.resolve(__dirname, 'src');
 
@@ -56,19 +57,15 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     }),
     // auto import doesnt support JSX/TSX
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [AntDesignVueResolver()],
       dts: path.resolve(srcPath, 'auto-imports.d.ts'),
     }),
     Components({
-      resolvers: [
-        ElementPlusResolver({
-          importStyle: 'sass',
-        }),
-      ],
+      resolvers: [AntDesignVueResolver()],
       dts: path.resolve(srcPath, 'components.d.ts'),
     }),
-    ElementPlus({
-      useSource: true,
+    createStyleImportPlugin({
+      resolves: [AndDesignVueResolve()],
     }),
   ];
 
@@ -99,8 +96,12 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     },
     css: {
       preprocessorOptions: {
-        scss: {
-          additionalData: `@use "~/styles/element/index.scss" as *;`,
+        less: {
+          modifyVars: {
+            'font-size-base': '14px',
+          },
+          javascriptEnabled: true,
+          additionalData: `@import "${path.resolve(__dirname, 'src/styles/additional.less')}";`,
         },
       },
     },

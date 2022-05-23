@@ -19,6 +19,9 @@ type TabItem = {
   wrapper: WrapperType;
 };
 
+/**
+ * @description 和多tabs，keep-alive相关的hooks
+ */
 const [useTabProvider, useTabConsumer] = createInjectionState(() => {
   const tabList = ref<TabItem[]>([]);
 
@@ -54,7 +57,7 @@ const [useTabProvider, useTabConsumer] = createInjectionState(() => {
         // 如果路由已存在在列表中，不添加
         return;
       }
-      const menu = value.plainMenus?.find((menu) => menu.path === value.route.path);
+      const menu = value.plainMenus?.find((menu) => menu.fullPath === value.route.path);
       if (menu) {
         tabList.value.push({
           label: menu.title,

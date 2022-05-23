@@ -6,6 +6,15 @@ import type { StandardMenuItem } from '../helpers/menu';
 import { MenuUtils } from '../helpers/menu';
 import * as services from '~/services/app';
 
+// const mockMenuData = Array.from(new Array(50)).map((r, i) => ({
+//   menuId: String(i),
+//   menuName: `菜单${i}`,
+//   url: `url${i}`,
+// }));
+
+/**
+ * @description 系统接入后调用的hooks，一般做登录鉴权、获取字典数据等
+ */
 const [useAppProvider, useAppConsumer] = createInjectionState(() => {
   const menuDom = ref<Array<VNode | null>>();
   const plainMenus = ref<StandardMenuItem[]>();

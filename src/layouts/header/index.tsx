@@ -1,9 +1,10 @@
 import { defineComponent } from 'vue';
+
 import Navbar from './navbar';
 import TabBar from './tabBar';
 
-const Header = defineComponent({
-  name: 'Header',
+const DefaultHeader = defineComponent({
+  name: 'DefaultHeader',
   setup() {
     return () => (
       <>
@@ -14,4 +15,4 @@ const Header = defineComponent({
   },
 });
 
-export default Header;
+export default DefaultHeader;

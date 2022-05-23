@@ -3,7 +3,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.colorDecorators": true,
   "stylelint.enable": true,
-  "stylelint.validate": ["css", "less", "scss", "sass", "postcss", "vue"],
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,

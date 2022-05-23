@@ -1,33 +1,32 @@
 import { computed, defineComponent } from 'vue';
-import { ElMenu } from 'element-plus';
-import { useRoute } from 'vue-router';
+import { Menu } from 'ant-design-vue';
 import { useLayoutConsumer } from '~/utils/hooks/layout';
+import { useMenuConsumer } from '~/utils/hooks/menu';
 import { useAppConsumer } from '~/utils/hooks/app';
-import './index.scss';
+import './index.less';
 
-const Menu = defineComponent({
-  name: 'Menu',
+const LayoutMenu = defineComponent({
+  name: 'LayoutMenu',
   setup() {
-    const { collapse, isSmallerThanTablet } = useLayoutConsumer()!;
+    const { collapse } = useLayoutConsumer()!;
 
-    const route = useRoute();
     const app = useAppConsumer();
+    const menu = useMenuConsumer();
 
-    const defaultActiveMenu = computed(() => route.path);
+    const menuMode = computed(() => (collapse.value ? 'vertical' : 'inline'));
 
     return () => (
-      <ElMenu
-        collapse={isSmallerThanTablet.value ? false : collapse.value}
-        backgroundColor="#001529"
-        textColor="#fff"
-        activeTextColor="#fff"
-        defaultActive={defaultActiveMenu.value}
-        router
+      <Menu
+        mode={menuMode.value}
+        theme="dark"
+        openKeys={menu?.openKeys.value}
+        selectedKeys={menu?.selectedKeys.value}
+        onOpenChange={menu?.onOpenChange}
       >
         {app?.menuDom.value}
-      </ElMenu>
+      </Menu>
     );
   },
 });
 
-export default Menu;
+export default LayoutMenu;

@@ -9,13 +9,13 @@ import 'virtual:windi-base.css';
 import 'virtual:windi-components.css';
 import 'virtual:windi-utilities.css';
 
-// Element Styles
-import 'element-plus/theme-chalk/src/base.scss';
-import 'element-plus/theme-chalk/src/message.scss';
-import 'element-plus/theme-chalk/src/notification.scss';
-
 // Customized Styles
-import '~/styles/index.scss';
+import '~/styles/index.less';
+
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+
+dayjs.locale('zh-cn');
 
 const app = createApp(App);
 

@@ -1,65 +1,55 @@
 import { defineComponent } from 'vue';
-import { ElAside, ElDrawer, ElScrollbar, ElIcon } from 'element-plus';
-import { QuestionFilled } from '@element-plus/icons-vue';
+import { Layout, Drawer } from 'ant-design-vue';
+import { ScrollBar } from '~/components/index';
+import { QuestionCircleFilled } from '@ant-design/icons-vue';
 import classNames from 'classnames';
 import Menu from '../menu';
 import { useLayoutConsumer } from '~/utils/hooks/layout';
-import styles from './index.module.scss';
+import styles from './index.module.less';
 
-const Sider = defineComponent({
-  name: 'Sider',
+const { Sider } = Layout;
+
+const DefaultSider = defineComponent({
+  name: 'DefaultSider',
   setup() {
-    const { isSmallerThanTablet, collapse, visible, toggle } = useLayoutConsumer()!;
+    const { isSmallerThanTablet, collapse, visible } = useLayoutConsumer()!;
 
     return () => {
       const content = (
         <>
           <div class={classNames('flex h-12 flex-center items-center', styles['sider-header'])}>
-            <ElIcon class="w-8 h-8">
-              <QuestionFilled></QuestionFilled>
-            </ElIcon>
+            <span class="w-8 h-8">
+              <QuestionCircleFilled></QuestionCircleFilled>
+            </span>
             {!collapse.value && <span class="pl-2">Title</span>}
           </div>
-          <ElScrollbar>
+          <ScrollBar style={{ height: 'calc(100vh - 3rem)' }}>
             <Menu></Menu>
-          </ElScrollbar>
+          </ScrollBar>
         </>
       );
 
       if (!isSmallerThanTablet.value) {
         return (
-          <ElAside
-            class={classNames(
-              'flex flex-col transition-width duration-200 shadow',
-              {
-                'w-64': !collapse.value,
-                'w-16': collapse.value,
-              },
-              styles.sider,
-            )}
+          <Sider
+            collapsed={collapse.value}
+            collapsible
+            trigger={null}
+            class={classNames('flex flex-col transition-width duration-200 shadow h-screen', styles.sider)}
+            width={256}
           >
             {content}
-          </ElAside>
+          </Sider>
         );
       }
 
       return (
-        <ElDrawer
-          modelValue={visible.value}
-          onUpdate:modelValue={() => {
-            toggle();
-          }}
-          direction="ltr"
-          size={256}
-          customClass={styles.drawer}
-          showClose={false}
-          withHeader={false}
-        >
+        <Drawer closable={false} visible={visible.value} placement="left" bodyStyle={{ padding: 0 }} width={256}>
           {content}
-        </ElDrawer>
+        </Drawer>
       );
     };
   },
 });
 
-export default Sider;
+export default DefaultSider;

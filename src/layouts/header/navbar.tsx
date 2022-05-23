@@ -1,9 +1,13 @@
 import { defineComponent } from 'vue';
 import { computed } from 'vue';
-import { ElHeader, ElIcon, ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
-import { Expand, Fold, ArrowDown } from '@element-plus/icons-vue';
+import { Layout, Dropdown, Menu, MenuItem } from 'ant-design-vue';
+import { MenuUnfoldOutlined, MenuFoldOutlined, DownOutlined } from '@ant-design/icons-vue';
+// import { ElHeader, ElIcon, ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
+// import { Expand, Fold, ArrowDown } from '@element-plus/icons-vue';
 import { useLayoutConsumer } from '~/utils/hooks/layout';
 import { useAppConsumer } from '~/utils/hooks/app';
+
+const { Header } = Layout;
 
 const NavBar = defineComponent({
   name: 'NavBar',
@@ -20,32 +24,28 @@ const NavBar = defineComponent({
 
     return () => {
       return (
-        <ElHeader class="justify-between flex items-center shadow-sm h-10">
-          <div>
-            <ElIcon onClick={toggle}>{fold.value ? <Expand></Expand> : <Fold></Fold>}</ElIcon>
+        <Header class="justify-between flex items-center shadow-sm h-10 bg-light-50 border-b-1 border-b-indigo-50">
+          <div class="h-10 flex items-center">
+            <span onClick={toggle}>
+              {fold.value ? <MenuUnfoldOutlined></MenuUnfoldOutlined> : <MenuFoldOutlined></MenuFoldOutlined>}
+            </span>
           </div>
-          <div class="flex items-center">
-            <ElDropdown
-              onCommand={(command: string) => {
-                if (command === 'logout') {
-                  logout();
-                }
-              }}
-              v-slots={{
-                dropdown: () => (
-                  <ElDropdownMenu>
-                    <ElDropdownItem command="logout">注销</ElDropdownItem>
-                  </ElDropdownMenu>
-                ),
-              }}
-            >
-              <span class="text-black font-medium">用户名</span>
-              <ElIcon class="ml-2">
-                <ArrowDown></ArrowDown>
-              </ElIcon>
-            </ElDropdown>
-          </div>
-        </ElHeader>
+          <Dropdown>
+            {{
+              default: () => (
+                <div class="text-black font-medium h-10 flex items-center">
+                  用户名
+                  <DownOutlined class="ml-2"></DownOutlined>
+                </div>
+              ),
+              overlay: () => (
+                <Menu>
+                  <MenuItem onClick={logout}>注销</MenuItem>
+                </Menu>
+              ),
+            }}
+          </Dropdown>
+        </Header>
       );
     };
   },

@@ -1,21 +1,21 @@
 import { defineComponent } from 'vue';
-import { ElConfigProvider } from 'element-plus';
-import { RouterView } from 'vue-router';
-import locale from 'element-plus/lib/locale/lang/zh-cn';
-import DefaultLayout from '~/layouts';
+import { ConfigProvider } from 'ant-design-vue';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+
+import Layout from '~/layouts';
 import { useAppProvider } from '~/utils/hooks/app';
 
 export default defineComponent({
+  name: 'App',
   setup() {
     useAppProvider();
-  },
-  render() {
-    return (
-      <ElConfigProvider locale={locale}>
-        <DefaultLayout>
-          <RouterView></RouterView>
-        </DefaultLayout>
-      </ElConfigProvider>
-    );
+
+    return () => {
+      return (
+        <ConfigProvider locale={zhCN}>
+          <Layout></Layout>
+        </ConfigProvider>
+      );
+    };
   },
 });

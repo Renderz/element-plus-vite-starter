@@ -4,8 +4,9 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElMain: typeof import('element-plus/es')['ElMain']
+    Bar: typeof import('./components/scrollbar/src/bar.vue')['default']
+    Scrollbar: typeof import('./components/scrollbar/src/scrollbar.vue')['default']
+    Thumb: typeof import('./components/scrollbar/src/thumb.vue')['default']
   }
 }
 
