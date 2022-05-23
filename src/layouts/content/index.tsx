@@ -1,6 +1,10 @@
 import type { VNode } from 'vue';
-import { Transition, defineComponent, KeepAlive } from 'vue';
+import { Transition, defineComponent, KeepAlive, ref, onMounted } from 'vue';
 import { Layout, BackTop } from 'ant-design-vue';
+import { throttle } from 'lodash-es';
+
+// import BackTop from '../../../../../github/ant-design-vue/components/back-top';
+
 import classNames from 'classnames';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import { RouterView } from 'vue-router';
@@ -14,17 +18,37 @@ const DefaultContent = defineComponent({
   name: 'DefaultContent',
   setup() {
     const { Wrapper, tabList } = useTabConsumer()!;
+    const visible = ref<boolean>(false);
+
+    // TODO: backtop暂时有问题
+    onMounted(() => {
+      const ele = document.querySelector('main.ant-layout-content>.el-scrollbar>.el-scrollbar__wrap') as HTMLDivElement;
+
+      ele?.addEventListener(
+        'scroll',
+        throttle((e) => {
+          const scrollTop = e.target.scrollTop;
+
+          if (scrollTop > 400) {
+            visible.value = true;
+          } else {
+            visible.value = false;
+          }
+        }, 500),
+      );
+    });
 
     return {
       Wrapper,
       tabList,
+      visible,
     };
   },
   render() {
-    const { Wrapper, tabList } = this;
+    const { Wrapper, tabList, visible } = this;
 
     return (
-      <Content class={classNames('overflow-hidden flex-1')}>
+      <Content class={classNames('overflow-hidden flex-1 p-3')}>
         <ScrollBar>
           <RouterView
             v-slots={{
@@ -44,8 +68,7 @@ const DefaultContent = defineComponent({
             }}
           ></RouterView>
           <BackTop
-            // TODO: backtop暂时有问题
-            style={{ display: 'block' }}
+            style={visible ? { display: 'block' } : { display: 'none' }}
             visibilityHeight={400}
             target={() =>
               document.querySelector('main.ant-layout-content>.el-scrollbar>.el-scrollbar__wrap') as HTMLElement
