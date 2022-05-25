@@ -49,7 +49,10 @@ export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
     //     },
     //   },
     // }),
-    windiCSS(),
+    windiCSS({
+      // 关闭css reset，否则会和antd某些样式冲突
+      preflight: false,
+    }),
     Pages({
       dirs: [{ dir: path.resolve(srcPath, 'pages'), baseRoute: '' }],
       exclude: ['**/components/*.vue'],
