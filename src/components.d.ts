@@ -4,10 +4,6 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AButton: typeof import('ant-design-vue/es')['Button']
-    AInput: typeof import('ant-design-vue/es')['Input']
-    AInputGroup: typeof import('ant-design-vue/es')['InputGroup']
-    ASelect: typeof import('ant-design-vue/es')['Select']
     Bar: typeof import('./components/scrollbar/src/bar.vue')['default']
     Scrollbar: typeof import('./components/scrollbar/src/scrollbar.vue')['default']
     Thumb: typeof import('./components/scrollbar/src/thumb.vue')['default']

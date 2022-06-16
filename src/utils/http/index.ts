@@ -1,4 +1,4 @@
-import { ElMessage, ElNotification } from 'element-plus';
+import { message, notification } from 'ant-design-vue';
 import { Requex } from './axios';
 import { ContentTypeEnum } from './types';
 import type { Options } from './types';
@@ -42,7 +42,7 @@ const instance = new Requex<RequexResponse>(
   {
     onSuccess: (response) => {
       if (response?.message) {
-        ElMessage.success(response.message);
+        message.success(response.message);
       }
     },
     onFail: (response, status, { url }) => {
@@ -51,13 +51,12 @@ const instance = new Requex<RequexResponse>(
         window.location.href = `${import.meta.env.VITE_API_URL}/me?redirect_uri=${encodeURIComponent(currHref)}`;
       } else if (status >= 200 && status < 300) {
         if (response?.message) {
-          ElMessage.error(response.message);
+          message.error(response.message);
         }
       } else {
-        ElNotification({
-          title: `请求错误 ${status}: ${url}`,
-          message: codeMessage[String(status)],
-          type: 'error',
+        notification.error({
+          message: `请求错误 ${status}: ${url}`,
+          description: codeMessage[String(status)],
         });
       }
     },
