@@ -1,4 +1,4 @@
-import { watch, ref, unref } from 'vue';
+import { watch, ref } from 'vue';
 import { useBreakpoints, breakpointsSematic, createInjectionState } from '@vueuse/core';
 
 /**
@@ -12,7 +12,7 @@ const [useLayoutProvider, useLayoutConsumer] = createInjectionState(() => {
   /**
    * sider 收缩/展开 （仅在tablet以上显示器使用)
    */
-  const collapse = ref<boolean>(unref(isSmallerThanTablet));
+  const collapse = ref<boolean>(isSmallerThanTablet.value);
 
   /**
    * drawer 收缩/展开 (仅在tablet以下显示器使用)
@@ -20,7 +20,7 @@ const [useLayoutProvider, useLayoutConsumer] = createInjectionState(() => {
   const visible = ref<boolean>(false);
 
   watch(
-    () => unref(isSmallerThanTablet),
+    () => isSmallerThanTablet.value,
     (curr, prev) => {
       if (curr === true && prev === false) {
         // 从大屏变成小屏
@@ -33,7 +33,7 @@ const [useLayoutProvider, useLayoutConsumer] = createInjectionState(() => {
   );
 
   const toggle = () => {
-    if (unref(isSmallerThanTablet)) {
+    if (isSmallerThanTablet.value) {
       visible.value = !visible.value;
     } else {
       collapse.value = !collapse.value;
