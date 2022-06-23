@@ -3,6 +3,7 @@
   --el-scrollbar-bg-color: var(--el-text-color-secondary);
   --el-scrollbar-hover-opacity: 0.5;
   --el-scrollbar-hover-bg-color: var(--el-text-color-secondary);
+  --el-transition-duration: 0.3s;
 }
 .el-scrollbar {
   overflow: hidden;
@@ -27,7 +28,7 @@
   cursor: pointer;
   border-radius: inherit;
   background-color: var(--el-scrollbar-bg-color, var(--el-text-color-secondary));
-  transition: var(--el-transition-duration) background-color;
+  transition: opacity var(--el-transition-duration);
   opacity: var(--el-scrollbar-opacity, 0.3);
 }
 .el-scrollbar__thumb:hover {
